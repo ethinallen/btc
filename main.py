@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import time
 
 def fetch():
     # get the
@@ -34,4 +35,6 @@ def compare(r):
         print('MONEY LOST:\t$ {}'.format(difference))
 
 if __name__ == '__main__':
-    compare(fetch())
+    while True:
+        compare(fetch())
+        time.sleep(15)
