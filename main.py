@@ -11,14 +11,23 @@ def fetch():
     return r
 
 def compare(r):
-    # the current price of bitcoin
-    price = float(r['price_usd'])
+
+    # load our account detail
     with open('account.json') as f:
         account = json.load(f)
 
-    quantity = account['quantity']
-    worth = price * quantity
-    difference = worth - account['worth']
+    # the current price of bitcoin
+    price = float(r['price_usd'])
+
+    # the amount bought and the price it was purchased for
+    quantityBought = account['quantityBought']
+    purchasePrice = account['purchasePrice']
+
+    # calculate the current worth of bitcoin quantity
+    worth = price * quantityBought
+    difference = worth - purchasePrice
+
+    # print the gain / loss of the purhcase
     if difference > 0:
         print('GAIN:\t{}'.format(difference))
     if difference < 0:
