@@ -29,9 +29,9 @@ def compare(r):
 
     # print the gain / loss of the purhcase
     if difference > 0:
-        print('GAIN:\t{}'.format(difference))
+        print('MONEY GAINED:\t$ {}'.format(difference))
     if difference < 0:
-        print('LOSS:\t{}'.format(difference))
+        print('MONEY LOST:\t$ {}'.format(difference))
 
 if __name__ == '__main__':
     compare(fetch())
