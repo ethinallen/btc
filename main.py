@@ -2,6 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import time
+import datetime
+from twilio.rest import Client
+
+class Drew():
+    def __init__(self):
+
+        with open('account.json') as f:
+            account = json.load(f)
+        self.sid = account['accountSID']
+        self.token = account['authToken']
+        self.client = Client(self.sid, self.token)
+        self.number = account['phoneNumber']
 
 def fetch():
     # get the
@@ -10,6 +22,7 @@ def fetch():
     with open('h.json', 'w') as f:
         json.dump(r, f)
     return r
+
 
 def compare(r):
 
@@ -23,18 +36,36 @@ def compare(r):
     # the amount bought and the price it was purchased for
     quantityBought = account['quantityBought']
     purchasePrice = account['purchasePrice']
+    highestWorth = account['highestWorth']
 
-    # calculate the current worth of bitcoin quantity
+    selloutPrice = account['highestWorth'] * .8
+
+    # calculate the current worth in dollars of bitcoin quantity
     worth = price * quantityBought
+
+    if worth > highestWorth:
+        account['highestWorth'] = worth
+        with open('account.json', 'w') as f:
+            account = json.dump(account, f)
+
+    if worth < selloutPrice:
+        sendPriceAlert(self.number, '~-~ CHECK BITCOIN WALLET ~-~')
+        exit()
     difference = worth - purchasePrice
 
     # print the gain / loss of the purhcase
     if difference > 0:
-        print('MONEY GAINED:\t$ {}'.format(difference))
+        print('{}\tMONEY GAINED:\t$ {}'.format(datetime.datetime.now(), difference))
     if difference < 0:
-        print('MONEY LOST:\t$ {}'.format(difference))
+        print('MONEY LOST:\t$ {}'.format(datetime.datetime.now(), difference))
+
+def sendPriceAlert(number, message):
+    message = client.messages.create(
+        to=number,
+        from_="+19389999671",
+        body=message)
 
 if __name__ == '__main__':
     while True:
         compare(fetch())
-        time.sleep(15)
+        time.sleep(30)
