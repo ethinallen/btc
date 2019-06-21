@@ -1,0 +1,9 @@
+{
+  "accountSID" : "twilio account ID here",
+  "authToken" : "twilio authorization token here",
+  "phoneNumber" : "+12345678901",
+  "quantityBought" : "number of bitcoins (can be float)",
+  "highestWorth" : 0,
+  "purchasePrice" : "amount you paid, can be float",
+  "selloutPrice" : 0
+}
