@@ -57,7 +57,7 @@ class Drew():
         # sends alert if the price drops below the thresh-hold that was set
         if worth < selloutPrice:
             string = self.alerts['priceDrop']
-            self.sendPriceAlert(self.number, self.formatMessage(string))
+            self.sendAlert(self.number, self.formatMessage(string))
             exit()
 
         # the difference between the present worth and the purchase price
@@ -76,7 +76,7 @@ class Drew():
                 f.write(str + '\n')
 
     # send alert about the price
-    def sendPriceAlert(self, number, message):
+    def sendAlert(self, number, message):
         client = Client(self.sid, self.token)
         message = client.messages.create(
             to=number,
@@ -88,7 +88,7 @@ class Drew():
         return string
 
 if __name__ == '__main__':
-
+    # make a drew instance
     drew = Drew()
 
     while True:
@@ -96,4 +96,8 @@ if __name__ == '__main__':
             drew.compare(drew.fetch())
             time.sleep(15)
         except:
+            # if there is a connection interruption: pass until it reconnects
+            # also send an alert that a problem was detected
+            string = drew.alerts['problem']
+            drew.sendAlert(drew.number, drew.formatMessage(string))
             pass
