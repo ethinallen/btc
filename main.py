@@ -8,6 +8,7 @@ from twilio.rest import Client
 class Drew():
     def __init__(self):
 
+        # load account information
         with open('account.json', 'r') as f:
             self.account = json.load(f)
 
@@ -15,12 +16,13 @@ class Drew():
         self.token = self.account['authToken']
         self.number = self.account['phoneNumber']
 
+        # load alerts
         with open('alerts.json', 'r') as f:
             self.alerts = json.load(f)
 
-
+    # fetch market information
     def fetch(self):
-        # get the
+
         r = requests.get('https://api.coinmarketcap.com/v1/ticker/bitcoin/')
         r = r.json()[0]
 
@@ -28,7 +30,7 @@ class Drew():
             json.dump(r, f)
         return r
 
-
+    # compares fetched data to
     def compare(self, r):
 
         # the current price of bitcoin
@@ -38,7 +40,6 @@ class Drew():
         quantityBought = self.account['quantityBought']
         purchasePrice = self.account['purchasePrice']
         highestWorth = self.account['highestWorth']
-
         selloutPrice = self.account['selloutPrice']
 
         # calculate the current worth in dollars of bitcoin quantity
@@ -49,13 +50,14 @@ class Drew():
         if worth > highestWorth:
 
             self.account['highestWorth'] = worth
-            self.account['selloutPrice'] = ((highestWorth - purchasePrice) * 0.92 + purchasePrice)
+            self.account['selloutPrice'] = ((highestWorth - purchasePrice) * 0.9 + purchasePrice)
 
             with open('account.json', 'w') as f:
                 account = json.dump(self.account, f)
 
         # sends alert if the price drops below the thresh-hold that was set
         if worth < selloutPrice:
+            print(worth)
             string = self.alerts['priceDrop']
             self.sendAlert(self.number, self.formatMessage(string))
             exit()
@@ -67,6 +69,7 @@ class Drew():
         if difference > 0:
             str = '{}\tMONEY GAINED:\t$ {}\tWORTH: $ {}'.format(datetime.datetime.now(), difference, worth)
 
+        #
         if difference < 0:
             str = 'MONEY LOST:\t$ {}'.format(datetime.datetime.now(), difference)
 
@@ -98,6 +101,6 @@ if __name__ == '__main__':
         except:
             # if there is a connection interruption: pass until it reconnects
             # also send an alert that a problem was detected
-            string = drew.alerts['problem']
-            drew.sendAlert(drew.number, drew.formatMessage(string))
+            # string = drew.alerts['problem']
+            # drew.sendAlert(drew.number, drew.formatMessage(string))
             pass
