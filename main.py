@@ -57,8 +57,10 @@ class Drew():
 
         # sends alert if the price drops below the thresh-hold that was set
         if worth < selloutPrice:
+
             print(worth)
             string = self.alerts['priceDrop']
+
             self.sendAlert(self.number, self.formatMessage(string))
             exit()
 
