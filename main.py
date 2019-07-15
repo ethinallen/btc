@@ -1,11 +1,11 @@
 import requests
-from bs4 import BeautifulSoup
 import json
 import time
 import datetime
 from twilio.rest import Client
 
 class Drew():
+    
     def __init__(self):
 
         # load account information
