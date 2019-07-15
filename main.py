@@ -95,14 +95,12 @@ class Drew():
 if __name__ == '__main__':
     # make a drew instance
     drew = Drew()
-
-    while True:
-        try:
-            drew.compare(drew.fetch())
-            time.sleep(15)
-        except:
-            # if there is a connection interruption: pass until it reconnects
-            # also send an alert that a problem was detected
-            # string = drew.alerts['problem']
-            # drew.sendAlert(drew.number, drew.formatMessage(string))
-            pass
+    try:
+        drew.compare(drew.fetch())
+        time.sleep(15)
+    except:
+        # if there is a connection interruption: pass until it reconnects
+        # also send an alert that a problem was detected
+        # string = drew.alerts['problem']
+        # drew.sendAlert(drew.number, drew.formatMessage(string))
+        pass
