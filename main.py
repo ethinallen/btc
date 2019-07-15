@@ -50,7 +50,7 @@ class Drew():
         if worth > highestWorth:
 
             self.account['highestWorth'] = worth
-            self.account['selloutPrice'] = ((highestWorth - purchasePrice) * 0.9 + purchasePrice)
+            self.account['selloutPrice'] = ((highestWorth - purchasePrice) * 0.8 + purchasePrice)
 
             with open('account.json', 'w') as f:
                 account = json.dump(self.account, f)
